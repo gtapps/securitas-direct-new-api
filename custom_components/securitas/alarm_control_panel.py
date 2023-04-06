@@ -309,7 +309,8 @@ class SecuritasAlarm(alarm.AlarmControlPanelEntity):
 
     async def async_alarm_disarm(self, code=None):
         """Send disarm command."""
-        if isinstance(code, str):
+        return
+        if isinstance(code, str) and code != '':
             code = int(code)
         if (
             self.client.config.get(CONF_CODE, "") == ""
