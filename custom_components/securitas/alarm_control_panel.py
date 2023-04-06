@@ -292,15 +292,17 @@ class SecuritasAlarm(alarm.AlarmControlPanelEntity):
     async def async_alarm_disarm(self, code=None):
         """Send disarm command."""
         if isinstance(code, str) and code != '':
+            _LOGGER.debug('Code to INT')
             code = int(code)
         if (
             self.client.config.get(CONF_CODE, "") == ""
             or str(self.client.config.get(CONF_CODE, "")) == str(code)
             or self.client.config.get(CONF_CODE, None) is None
         ):
-            print('DISARMING NOW GABRIEL')
+            _LOGGER.debug('DISARMING NOW GABRIEL')
             self.__force_state(STATE_ALARM_DISARMING)
             await self.set_arm_state("DARM1")
+        _LOGGER.debug('TRIED DISARM')
 
     async def async_alarm_arm_home(self, code=None):
         """Send arm home command."""
