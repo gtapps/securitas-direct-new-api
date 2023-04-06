@@ -291,6 +291,7 @@ class SecuritasAlarm(alarm.AlarmControlPanelEntity):
 
     async def async_alarm_disarm(self, code=None):
         """Send disarm command."""
+        _LOGGER.debug('CODE:' + code)
         if isinstance(code, str) and code != '':
             _LOGGER.debug('Code to INT')
             code = int(code)
