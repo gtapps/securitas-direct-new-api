@@ -2,44 +2,26 @@
 
 import asyncio
 import datetime
-from datetime import timedelta
 import logging
+from datetime import timedelta
 
 import homeassistant.components.alarm_control_panel as alarm
 from homeassistant.components.alarm_control_panel.const import (
-    SUPPORT_ALARM_ARM_AWAY,
-    SUPPORT_ALARM_ARM_CUSTOM_BYPASS,
-    SUPPORT_ALARM_ARM_HOME,
-    SUPPORT_ALARM_ARM_NIGHT,
-)
-from homeassistant.const import (  # STATE_UNAVAILABLE,; STATE_UNKNOWN,
-    CONF_CODE,
-    STATE_ALARM_ARMED_AWAY,
-    STATE_ALARM_ARMED_CUSTOM_BYPASS,
-    STATE_ALARM_ARMED_HOME,
-    STATE_ALARM_ARMED_NIGHT,
-    STATE_ALARM_ARMING,
-    STATE_ALARM_DISARMED,
-    STATE_ALARM_DISARMING,
-)
-
-from homeassistant.helpers.entity import DeviceInfo
+    SUPPORT_ALARM_ARM_AWAY, SUPPORT_ALARM_ARM_CUSTOM_BYPASS,
+    SUPPORT_ALARM_ARM_HOME, SUPPORT_ALARM_ARM_NIGHT)
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import (  # STATE_UNAVAILABLE,; STATE_UNKNOWN,
+    CONF_CODE, STATE_ALARM_ARMED_AWAY, STATE_ALARM_ARMED_CUSTOM_BYPASS,
+    STATE_ALARM_ARMED_HOME, STATE_ALARM_ARMED_NIGHT, STATE_ALARM_ARMING,
+    STATE_ALARM_DISARMED, STATE_ALARM_DISARMING)
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from . import (
-    CONF_INSTALATION_KEY,
-    DOMAIN,
-    SecuritasDirectDevice,
-    SecuritasHub,
-)
-from .securitas_direct_new_api.dataTypes import (
-    ArmStatus,
-    ArmType,
-    CheckAlarmStatus,
-    DisarmStatus,
-    Installation,
-)
+
+from . import CONF_INSTALATION_KEY, DOMAIN, SecuritasDirectDevice, SecuritasHub
+from .securitas_direct_new_api.dataTypes import (ArmStatus, ArmType,
+                                                 CheckAlarmStatus,
+                                                 DisarmStatus, Installation)
 
 _LOGGER = logging.getLogger(__name__)
 SCAN_INTERVAL = timedelta(seconds=1200)
@@ -309,7 +291,6 @@ class SecuritasAlarm(alarm.AlarmControlPanelEntity):
 
     async def async_alarm_disarm(self, code=None):
         """Send disarm command."""
-        return
         if isinstance(code, str) and code != '':
             code = int(code)
         if (
@@ -317,6 +298,7 @@ class SecuritasAlarm(alarm.AlarmControlPanelEntity):
             or str(self.client.config.get(CONF_CODE, "")) == str(code)
             or self.client.config.get(CONF_CODE, None) is None
         ):
+            print('DISARMING NOW GABRIEL')
             self.__force_state(STATE_ALARM_DISARMING)
             await self.set_arm_state("DARM1")
 
